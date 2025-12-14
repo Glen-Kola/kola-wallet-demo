@@ -324,6 +324,114 @@ export function useKolaWallet() {
     }
   };
 
+  // Create organization
+  const createOrganization = async (data: {
+    name: string;
+    description?: string;
+    category?: string;
+  }) => {
+    try {
+      const result = await apiFetch("/organization", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+
+      await fetchData();
+      return result;
+    } catch (error) {
+      console.error("Error creating organization:", error);
+      throw error;
+    }
+  };
+
+  // Create group
+  const createGroup = async (data: {
+    name: string;
+    description?: string;
+    isOrganizationGroup?: boolean;
+  }) => {
+    try {
+      const result = await apiFetch("/group", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+
+      await fetchData();
+      return result;
+    } catch (error) {
+      console.error("Error creating group:", error);
+      throw error;
+    }
+  };
+
+  // Add collector to group
+  const addCollector = async (
+    groupId: string,
+    data: {
+      name: string;
+      email: string;
+      role: string;
+    }
+  ) => {
+    try {
+      const result = await apiFetch(`/group/${groupId}/collector`, {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+
+      await fetchData();
+      return result;
+    } catch (error) {
+      console.error("Error adding collector:", error);
+      throw error;
+    }
+  };
+
+  // Remove collector from group
+  const removeCollector = async (groupId: string, collectorId: string) => {
+    try {
+      const result = await apiFetch(
+        `/group/${groupId}/collector/${collectorId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      await fetchData();
+      return result;
+    } catch (error) {
+      console.error("Error removing collector:", error);
+      throw error;
+    }
+  };
+
+  // Register manual collection (collector action)
+  const registerCollection = async (
+    groupId: string,
+    collectorId: string,
+    data: {
+      amount: number;
+      description?: string;
+      collectionDate?: string;
+    }
+  ) => {
+    try {
+      const result = await apiFetch(`/group/${groupId}/collection`, {
+        method: "POST",
+        body: JSON.stringify({
+          collectorId,
+          ...data,
+        }),
+      });
+
+      await fetchData();
+      return result;
+    } catch (error) {
+      console.error("Error registering collection:", error);
+      throw error;
+    }
+  };
+
   return {
     balance,
     transactions,
@@ -341,6 +449,11 @@ export function useKolaWallet() {
     withdrawFromGroup,
     depositToOrganization,
     withdrawFromOrganization,
+    createOrganization,
+    createGroup,
+    addCollector,
+    removeCollector,
+    registerCollection,
     refreshData: fetchData,
   };
 }
