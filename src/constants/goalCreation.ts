@@ -1,0 +1,101 @@
+import {
+  BookOpen,
+  Briefcase,
+  CarFront,
+  GraduationCap,
+  Heart,
+  Home,
+  Leaf,
+  PiggyBank,
+  Plane,
+  ShieldCheck,
+  Target,
+} from "lucide-react";
+
+export const colorOptions = [
+  { key: "emerald", value: "#10b981", label: "Emerald" },
+  { key: "blue", value: "#2563eb", label: "Blue" },
+  { key: "sky", value: "#0ea5e9", label: "Sky" },
+  { key: "amber", value: "#f59e0b", label: "Amber" },
+  { key: "rose", value: "#f43f5e", label: "Rose" },
+  { key: "violet", value: "#8b5cf6", label: "Violet" },
+  { key: "slate", value: "#475569", label: "Slate" },
+];
+
+export const iconOptions = [
+  { key: "leaf", label: "Leaf", Icon: Leaf },
+  { key: "shield", label: "Shield", Icon: ShieldCheck },
+  { key: "plane", label: "Plane", Icon: Plane },
+  { key: "home", label: "Home", Icon: Home },
+  { key: "grad", label: "Education", Icon: GraduationCap },
+  { key: "car", label: "Car", Icon: CarFront },
+  { key: "heart", label: "Wellness", Icon: Heart },
+  { key: "briefcase", label: "Work", Icon: Briefcase },
+  { key: "target", label: "Target", Icon: Target },
+  { key: "book", label: "Books", Icon: BookOpen },
+  { key: "piggy", label: "Piggy", Icon: PiggyBank },
+];
+
+export const templates = [
+  {
+    key: "emergency",
+    name: "Emergency Fund",
+    description: "3-6 months of expenses with penalty on early withdrawal",
+    target: 1500,
+    color: "amber",
+    icon: "shield",
+    locked: true,
+    penaltyRate: 0.05,
+    boostRate: 0.01,
+  },
+  {
+    key: "vacation",
+    name: "Vacation Escape",
+    description: "Save for travel and experiences",
+    target: 1200,
+    color: "sky",
+    icon: "plane",
+    locked: false,
+    penaltyRate: 0.02,
+    boostRate: 0.02,
+  },
+  {
+    key: "home",
+    name: "Home Upgrade",
+    description: "Furniture, appliances, or down payment",
+    target: 2500,
+    color: "emerald",
+    icon: "home",
+    locked: false,
+    penaltyRate: 0.02,
+    boostRate: 0.02,
+  },
+  {
+    key: "education",
+    name: "Education",
+    description: "Courses, certifications, or tuition",
+    target: 800,
+    color: "purple",
+    icon: "grad",
+    locked: false,
+    penaltyRate: 0.02,
+    boostRate: 0.03,
+  },
+  {
+    key: "car",
+    name: "Car Fund",
+    description: "Maintenance, insurance, or upgrades",
+    target: 1000,
+    color: "blue",
+    icon: "car",
+    locked: false,
+    penaltyRate: 0.02,
+    boostRate: 0.015,
+  },
+];
+
+export default {
+  colorOptions,
+  iconOptions,
+  templates,
+};
