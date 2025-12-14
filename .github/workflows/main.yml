@@ -1,0 +1,40 @@
+name: Deploy to Supabase + GitHub Pages
+
+on:
+    push:
+        branches: [release]
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: write
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "20"
+
+            - name: Install dependencies
+              run: yarn install
+
+            - name: Build frontend
+              run: yarn build
+              env:
+                  VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+                  VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+            - name: Deploy functions to Supabase
+              run: npx supabase functions deploy make-server-c5964f01 --project-ref ifkqqqjnjkdmxcqflofk
+              env:
+                  SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+            - name: Deploy frontend to GitHub Pages
+              uses: peaceiris/actions-gh-pages@v3
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./build
