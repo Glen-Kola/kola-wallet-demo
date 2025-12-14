@@ -13,6 +13,9 @@ import {
   Briefcase,
   BookOpen,
   PiggyBank,
+  Calendar,
+  TrendingUp,
+  DollarSign,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
@@ -119,6 +122,52 @@ export function GoalDetails({
     return monthly > 0 ? Math.ceil(remaining / monthly) : null;
   }, [goal]);
 
+  const paymentSchedule = useMemo(() => {
+    const remaining = Math.max(goal.target - goal.current, 0);
+    const daysRemaining = goal.duration || 365;
+
+    return {
+      daily: remaining / daysRemaining,
+      weekly: (remaining / daysRemaining) * 7,
+      monthly: (remaining / daysRemaining) * 30,
+    };
+  }, [goal]);
+
+  const potentialGain = useMemo(() => {
+    if (!goal.target || !goal.boostRate) return 0;
+    return goal.target * (goal.boostRate || 0);
+  }, [goal]);
+
+  const getCreditScoreLevel = (score: number) => {
+    if (score >= 800) return { level: "Excellent", color: "text-emerald-600" };
+    if (score >= 740) return { level: "Very Good", color: "text-blue-600" };
+    if (score >= 670) return { level: "Good", color: "text-green-600" };
+    if (score >= 580) return { level: "Fair", color: "text-yellow-600" };
+    return { level: "Poor", color: "text-orange-600" };
+  };
+
+  const creditImpact = useMemo(() => {
+    const baseImpact = goal.locked ? 8 : 5;
+    const progressImpact = Math.floor((goal.current / goal.target) * 10);
+    const consistencyImpact = goal.lastMonthlyDeposit ? 5 : 0;
+
+    return {
+      total: baseImpact + progressImpact + consistencyImpact,
+      details: {
+        locked: goal.locked
+          ? `+${baseImpact} points (locked goal)`
+          : `+${baseImpact} points`,
+        progress: `+${progressImpact} points (${Math.floor(
+          (goal.current / goal.target) * 100
+        )}% complete)`,
+        consistency:
+          consistencyImpact > 0
+            ? `+${consistencyImpact} points (regular deposits)`
+            : "No regular deposits yet",
+      },
+    };
+  }, [goal]);
+
   return (
     <div className="p-6 space-y-6 pb-24">
       <div className="flex items-center gap-2">
@@ -211,12 +260,102 @@ export function GoalDetails({
             </p>
           </div>
           <div className="bg-slate-50 rounded-xl p-4">
-            <p className="text-slate-500 text-sm">Credit Score</p>
-            <p className="text-slate-900">
-              {creditScore ? creditScore.score : "Loading..."}
+            <p className="text-slate-500 text-sm">Current Credit Score</p>
+            <p
+              className={`text-lg font-semibold ${
+                creditScore ? getCreditScoreLevel(creditScore.score).color : ""
+              }`}
+            >
+              {creditScore ? (
+                <>
+                  {creditScore.score}
+                  <span className="text-sm text-slate-500 ml-1">
+                    ({getCreditScoreLevel(creditScore.score).level})
+                  </span>
+                </>
+              ) : (
+                "Loading..."
+              )}
+            </p>
+          </div>
+        </div>
+
+        {/* Payment Schedule Section */}
+        <div className="mt-4 bg-emerald-50 rounded-xl p-4 border border-emerald-100">
+          <div className="flex items-center gap-2 mb-3">
+            <Calendar className="w-5 h-5 text-emerald-600" />
+            <h3 className="text-slate-900 font-semibold">
+              Payment Schedule to Reach Goal
+            </h3>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            <div className="text-center">
+              <p className="text-slate-500 text-xs mb-1">Daily</p>
+              <p className="text-slate-900 font-semibold">
+                ${paymentSchedule.daily.toFixed(2)}
+              </p>
+            </div>
+            <div className="text-center">
+              <p className="text-slate-500 text-xs mb-1">Weekly</p>
+              <p className="text-slate-900 font-semibold">
+                ${paymentSchedule.weekly.toFixed(2)}
+              </p>
+            </div>
+            <div className="text-center">
+              <p className="text-slate-500 text-xs mb-1">Monthly</p>
+              <p className="text-slate-900 font-semibold">
+                ${paymentSchedule.monthly.toFixed(2)}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Potential Gain Section */}
+        {potentialGain > 0 && (
+          <div className="mt-4 bg-blue-50 rounded-xl p-4 border border-blue-100">
+            <div className="flex items-center gap-2 mb-2">
+              <DollarSign className="w-5 h-5 text-blue-600" />
+              <h3 className="text-slate-900 font-semibold">
+                Potential Earnings
+              </h3>
+            </div>
+            <p className="text-slate-600 text-sm mb-2">
+              If you reach your goal on time and withdraw without penalties:
+            </p>
+            <p className="text-2xl font-bold text-blue-600">
+              +${potentialGain.toFixed(2)}
             </p>
             <p className="text-slate-500 text-xs mt-1">
-              Consistent deposits and locked goals improve savings behavior.
+              {((potentialGain / goal.target) * 100).toFixed(1)}% return on your
+              savings
+            </p>
+          </div>
+        )}
+
+        {/* Credit Score Impact Section */}
+        <div className="mt-4 bg-purple-50 rounded-xl p-4 border border-purple-100">
+          <div className="flex items-center gap-2 mb-3">
+            <TrendingUp className="w-5 h-5 text-purple-600" />
+            <h3 className="text-slate-900 font-semibold">
+              Credit Score Impact
+            </h3>
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <p className="text-slate-600 text-sm">Total Impact</p>
+              <p className="text-lg font-semibold text-purple-600">
+                +{creditImpact.total} points
+              </p>
+            </div>
+            <div className="space-y-1 text-xs text-slate-600">
+              <p>• {creditImpact.details.locked}</p>
+              <p>• {creditImpact.details.progress}</p>
+              <p>• {creditImpact.details.consistency}</p>
+            </div>
+            <p className="text-slate-500 text-xs mt-2 pt-2 border-t border-purple-200">
+              {goal.locked
+                ? "Locked goals demonstrate strong commitment and significantly boost your credit score."
+                : "Consider locking this goal to maximize your credit score improvement."}
             </p>
           </div>
         </div>

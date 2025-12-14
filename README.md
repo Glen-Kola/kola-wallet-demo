@@ -1,12 +1,44 @@
 # Kola Wallet Design Overview
 
-This is a code bundle for Kola Wallet Design Overview. The original project is available at https://www.figma.com/design/wiP2nqtWWrZql4KYa6rjfk/Kola-Wallet-Design-Overview.
+This is a code bundle for Kola Wallet Design Overview. The original project is available at https://glen-kola.github.io/kola-wallet-demo/
 
 ## Running the code
 
 Run `npm i` to install the dependencies.
 
 Run `npm run dev` to start the development server.
+
+## 🆕 New Features: Organizations, Groups & Collectors
+
+This implementation adds comprehensive support for **organizations**, **savings groups**, and **collector-managed transactions** with multi-level impact calculations.
+
+### Key Features
+
+- **Create Organizations** - Manage business and community funds
+- **Create Groups** - Pool savings with others or as organization-backed groups
+- **Collector Management** - Assign collectors to register manual transactions
+- **Manual Collections** - Track collected amounts with multi-level impact:
+  - User/Member level: Updates savings goal progress
+  - Collector level: Tracks performance metrics
+  - Organization level: Updates total collections and ROI
+
+### Organization Group Badge
+
+Organization-backed groups are visually marked with:
+
+- 🏢 Building icon overlay on group avatar
+- Amber "Organization Group" badge
+- Dedicated Collectors and Collection action buttons
+
+### Documentation
+
+- 📖 [Organizations & Groups Guide](src/guidelines/OrganizationsAndGroups.md)
+- 🎨 [Styling Guide](STYLING_GUIDE.md)
+- 📊 [Implementation Summary](IMPLEMENTATION_SUMMARY.md)
+- 🔌 [API Integration Guide](API_INTEGRATION_GUIDE.md)
+- ✅ [Completion Checklist](COMPLETION_CHECKLIST.md)
+
+---
 
 ## About the Kola Wallet
 

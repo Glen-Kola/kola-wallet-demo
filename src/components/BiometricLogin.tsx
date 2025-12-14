@@ -1,10 +1,18 @@
+import { useState } from "react";
 import { Fingerprint } from "lucide-react";
+import { PinLogin } from "./PinLogin";
 
 interface BiometricLoginProps {
   onLogin: () => void;
 }
 
 export function BiometricLogin({ onLogin }: BiometricLoginProps) {
+  const [showPinLogin, setShowPinLogin] = useState(false);
+
+  if (showPinLogin) {
+    return <PinLogin onLogin={onLogin} onBack={() => setShowPinLogin(false)} />;
+  }
+
   return (
     <div
       className="min-h-screen bg-gradient-to-br from-[#543c52] to-[#2f2232] flex items-center justify-center p-4"
@@ -18,7 +26,7 @@ export function BiometricLogin({ onLogin }: BiometricLoginProps) {
         <div className="space-y-2">
           <div className="w-20 h-20 bg-primary rounded-3xl mx-auto flex items-center justify-center shadow-2xl border border-white/10 overflow-hidden p-4">
             <img
-              src="/logo.png"
+              src={`${import.meta.env.BASE_URL}logo.png`}
               alt="Kola Wallet"
               className="w-14 h-14 object-contain"
             />
@@ -42,7 +50,10 @@ export function BiometricLogin({ onLogin }: BiometricLoginProps) {
         </div>
 
         {/* Alternative Login */}
-        <button className="text-[#c9b6d3] text-sm hover:text-[#e1d4e6] transition-colors">
+        <button
+          onClick={() => setShowPinLogin(true)}
+          className="text-[#c9b6d3] text-sm hover:text-[#e1d4e6] transition-colors"
+        >
           Use PIN instead
         </button>
 
