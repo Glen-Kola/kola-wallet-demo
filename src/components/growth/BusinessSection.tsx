@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Building2 } from "lucide-react";
+import { CreateOrganizationModal } from "./modals/CreateOrganizationModal";
 
 interface BusinessSectionProps {
   organizations: any[];
@@ -12,13 +14,34 @@ interface BusinessSectionProps {
     maxWithdraw?: number,
     penaltyRate?: number
   ) => void;
+  onCreateOrganization?: (data: {
+    name: string;
+    description?: string;
+    category?: string;
+  }) => Promise<void>;
 }
 
 export function BusinessSection({
   organizations,
   loading,
   onOpenFundsModal,
+  onCreateOrganization,
 }: BusinessSectionProps) {
+  const [showCreateModal, setShowCreateModal] = useState(false);
+
+  const handleCreateOrganization = async (data: {
+    name: string;
+    description?: string;
+    category?: string;
+  }) => {
+    if (onCreateOrganization) {
+      await onCreateOrganization(data);
+    } else {
+      // Mock implementation
+      console.log("Creating organization:", data);
+    }
+  };
+
   if (loading) {
     return (
       <div className="space-y-4">
@@ -39,7 +62,7 @@ export function BusinessSection({
     <div className="space-y-4">
       {/* Create Organization CTA */}
       <div
-        className="bg-gradient-to-br rounded-3xl p-6 text-white"
+        className="bg-gradient-to-br rounded-3xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow"
         style={{
           backgroundColor: "#543c52",
         }}
@@ -49,7 +72,8 @@ export function BusinessSection({
           Organize funds for causes and teams
         </p>
         <button
-          className="bg-white text-primary-600 px-6 py-2 rounded-xl text-sm transition-colors"
+          onClick={() => setShowCreateModal(true)}
+          className="bg-white text-primary-600 px-6 py-2 rounded-xl text-sm font-medium transition-all hover:bg-amber-50"
           style={{
             color: "#543c52",
           }}
@@ -104,7 +128,11 @@ export function BusinessSection({
                       org.balance
                     )
                   }
-                  className="flex-1 bg-amber-100 text-amber-800 py-2 rounded-xl text-sm hover:bg-amber-200 transition-colors"
+                  className="flex-1 bg-primary-500 text-amber-800 py-2 rounded-xl text-sm font-medium hover:bg-amber-600 transition-colors"
+                  style={{
+                    backgroundColor: "#543c52",
+                    color: "#c9b6d3",
+                  }}
                 >
                   Deposit
                 </button>
@@ -118,7 +146,7 @@ export function BusinessSection({
                       org.balance
                     )
                   }
-                  className="flex-1 bg-slate-100 text-slate-700 py-2 rounded-xl text-sm hover:bg-slate-200 transition-colors"
+                  className="flex-1 bg-slate-100 text-slate-700 py-2 rounded-xl text-sm font-medium hover:bg-slate-200 transition-colors"
                 >
                   Withdraw
                 </button>
@@ -127,6 +155,13 @@ export function BusinessSection({
           ))}
         </div>
       )}
+
+      {/* Create Organization Modal */}
+      <CreateOrganizationModal
+        open={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onCreateOrganization={handleCreateOrganization}
+      />
     </div>
   );
 }

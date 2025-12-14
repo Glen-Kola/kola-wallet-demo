@@ -21,6 +21,11 @@ export function Growth() {
     withdrawFromGroup,
     depositToOrganization,
     withdrawFromOrganization,
+    createOrganization,
+    createGroup,
+    addCollector,
+    removeCollector,
+    registerCollection,
   } = useKolaWallet();
   const [activeSection, setActiveSection] = useState<
     "savings" | "groups" | "business" | "goalCreation" | "goalDetails"
@@ -157,7 +162,12 @@ export function Growth() {
         <GroupsSection
           groups={groups}
           loading={loading}
+          userRole="user"
           onOpenFundsModal={handleOpenFundsModal}
+          onCreateGroup={createGroup}
+          onAddCollector={addCollector}
+          onRemoveCollector={removeCollector}
+          onRegisterCollection={registerCollection}
         />
       )}
       {activeSection === "business" && (
@@ -165,6 +175,7 @@ export function Growth() {
           organizations={organizations}
           loading={loading}
           onOpenFundsModal={handleOpenFundsModal}
+          onCreateOrganization={createOrganization}
         />
       )}
       {activeSection === "goalCreation" && (
