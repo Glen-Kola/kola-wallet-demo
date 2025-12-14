@@ -48,7 +48,7 @@
     "tailwind-merge": "*",
     "vaul": "^1.1.2"
   },
-  "homepage": "https://yourusername.github.io/kola-wallet-demo",
+  "homepage": "https://github.com/Glen-Kola/kola-wallet-demo",
   "scripts": {
     "dev": "vite",
     "dev:host": "vite --host",
