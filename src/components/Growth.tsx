@@ -145,7 +145,7 @@ export function Growth() {
       {/* Content */}
       {activeSection === "savings" && (
         <SavingsSection
-          goals={savingsGoals}
+          goals={savingsGoals.map((g) => ({ ...g, icon: g.icon ?? "default" }))}
           loading={loading}
           onOpenFundsModal={handleOpenFundsModal}
           onAddGoal={() => setActiveSection("goalCreation")}
