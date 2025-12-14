@@ -18,7 +18,7 @@ export function BiometricLogin({ onLogin }: BiometricLoginProps) {
         <div className="space-y-2">
           <div className="w-20 h-20 bg-primary rounded-3xl mx-auto flex items-center justify-center shadow-2xl border border-white/10 overflow-hidden p-4">
             <img
-              src="/logo.png"
+              src={`${import.meta.env.BASE_URL}logo.png`}
               alt="Kola Wallet"
               className="w-14 h-14 object-contain"
             />
