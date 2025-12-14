@@ -1,10 +1,18 @@
+import { useState } from "react";
 import { Fingerprint } from "lucide-react";
+import { PinLogin } from "./PinLogin";
 
 interface BiometricLoginProps {
   onLogin: () => void;
 }
 
 export function BiometricLogin({ onLogin }: BiometricLoginProps) {
+  const [showPinLogin, setShowPinLogin] = useState(false);
+
+  if (showPinLogin) {
+    return <PinLogin onLogin={onLogin} onBack={() => setShowPinLogin(false)} />;
+  }
+
   return (
     <div
       className="min-h-screen bg-gradient-to-br from-[#543c52] to-[#2f2232] flex items-center justify-center p-4"
@@ -42,7 +50,10 @@ export function BiometricLogin({ onLogin }: BiometricLoginProps) {
         </div>
 
         {/* Alternative Login */}
-        <button className="text-[#c9b6d3] text-sm hover:text-[#e1d4e6] transition-colors">
+        <button
+          onClick={() => setShowPinLogin(true)}
+          className="text-[#c9b6d3] text-sm hover:text-[#e1d4e6] transition-colors"
+        >
           Use PIN instead
         </button>
 
