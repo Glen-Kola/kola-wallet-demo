@@ -38,12 +38,22 @@ export function BusinessSection({
   return (
     <div className="space-y-4">
       {/* Create Organization CTA */}
-      <div className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-3xl p-6 text-white">
+      <div
+        className="bg-gradient-to-br rounded-3xl p-6 text-white"
+        style={{
+          backgroundColor: "#543c52",
+        }}
+      >
         <h3 className="text-white mb-2">Business & Communities</h3>
         <p className="text-amber-100 text-sm mb-4">
           Organize funds for causes and teams
         </p>
-        <button className="bg-white text-amber-700 px-6 py-2 rounded-xl text-sm hover:bg-amber-50 transition-colors">
+        <button
+          className="bg-white text-primary-600 px-6 py-2 rounded-xl text-sm transition-colors"
+          style={{
+            color: "#543c52",
+          }}
+        >
           Create Organization
         </button>
       </div>
